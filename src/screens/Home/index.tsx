@@ -1,14 +1,27 @@
-import { Text, TextInput, View, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, ScrollView, FlatList, Alert } from 'react-native';
 import { Participant } from '../../components/Participant';
 import { styles } from './styles';
 
 export default function Home() {
   const participants = ['Nandin', 'Knek', 'Samuca', 'Danik', 'Cintia', 'Joao', 'Leao', 'Miguez', 'Teusma', 'Alice']
   function handleParticipantAdd(){
+    if(participants.includes("Nandin")){
+      return Alert.alert("Participante Existe", "Já existe um participante na lista com esse nome")
+    }
     console.log('CLicou no adicionar');
   }
 
   function handleParticipantRemove(name: string){
+    Alert.alert("Remover", `Deseja remover o participante ${name}?`, [
+      {
+        text: 'Sim',
+        onPress: () => Alert.alert("Deletado!")
+      },
+      {
+        text: 'Não',
+        style: 'cancel'
+      }
+    ]);
     console.log('Removeu participante ' + name);
   }
 
@@ -34,9 +47,14 @@ export default function Home() {
                 <Text style={styles.buttonText}>+</Text>
             </TouchableOpacity>
         </View>
-        {/* ScrollView e FlatList ativa a rolagem  */}
+        {/* 
+        ScrollView e FlatList ativa a rolagem  
+        ScrollView -> adicioan rolagem quando tem muitos elementos e eles saem da tela, carregando todos os elementos/componentes 
+
+        FlatList -> renderiza os elementos que caiba na tela, os que nao estao na lista ele nao renderiza
+        */}
         <FlatList 
-          data={[]}
+          data={participants}
           keyExtractor={item => item}
           renderItem={({item}) => (
             <Participant 
